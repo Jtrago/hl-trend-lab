@@ -1,0 +1,31 @@
+{
+  "freeze_time_utc": "2026-10-30T09:13:59+00:00",
+  "freeze_time_et": "2026-10-30T05:13:59-04:00",
+  "data_cutoff_utc": "2026-10-30T08:00:00+00:00",
+  "data_cutoff_et": "2026-10-30T04:00:00-04:00",
+  "relation_to_portfolio_freeze": "same data cutoff as frozen_portfolio_spec (sha d323271ae21eb7e7\u2026, frozen 2026-10-30T09:09:26+00:00); no new bars arrived between the two freezes",
+  "status": "frozen research protocol \u2014 NOT a live or paper trade",
+  "sha256": "182d36e831ea9af5ace1065550b126be0d9e946f0e2db9987339c318c0a9442b",
+  "rule": {
+    "name": "SMA200 daily trend, long-only, BTC+ETH equal weight",
+    "assets": [
+      "BTCUSDT",
+      "ETHUSDT"
+    ],
+    "signal": "long while the asset's last COMPLETED UTC daily close (daily bars built from its own Binance 1h bars) > SMA(200) of completed daily closes; flat otherwise. A 4h bar inside day D sees day D-1 only.",
+    "trade_tf": "4h",
+    "decision": "at 4h bar close",
+    "fill": "next 4h bar open",
+    "sma_len": 200,
+    "parameters_searched": "none (textbook value)",
+    "costs": {
+      "fee_per_side": 0.00045,
+      "slip_per_side": 0.0002
+    },
+    "position": "100% notional per asset when long, no leverage, no shorts",
+    "weighting": "equal weight BTC/ETH, daily rebalanced",
+    "funding": "evaluation charges actual Hyperliquid hourly funding (spot signal assumed traded as HL perp); also reported without funding",
+    "calendar": "post-freeze window starts flat at the data cutoff; same calendar segments (Jan 1 UTC splits) as the frozen lab portfolio",
+    "code": "engine/baseline.py::sma200_signal"
+  }
+}

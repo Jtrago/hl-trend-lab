@@ -1,0 +1,35 @@
+//@version=6
+// HL Trend Lab export — PAPER RESEARCH ONLY. Not financial advice.
+// Fill rule: signals on bar close, market fill at next bar open.
+// Costs: fee 0.0450% + slip 0.0200% per side folded into commission.
+strategy("HL Trend Lab ma_cross EMA 12/26 long", overlay=true, initial_capital=10000, default_qty_type=strategy.percent_of_equity, default_qty_value=100, commission_type=strategy.commission.percent, commission_value=0.065, slippage=0, pyramiding=1, margin_long=0, margin_short=0, process_orders_on_close=false, calc_on_every_tick=false, calc_on_order_fills=false, fill_orders_on_standard_ohlc=true)
+
+fastLen = input.int(12, "Fast length", minval=1)
+slowLen = input.int(26, "Slow length", minval=1)
+allowShort = input.bool(false, "Allow shorts")
+fastMa = ta.ema(close, fastLen)
+slowMa = ta.ema(close, slowLen)
+crossUp = ta.crossover(fastMa, slowMa)
+crossDn = ta.crossunder(fastMa, slowMa)
+longEntry = crossUp
+longExit = crossDn
+shortEntry = allowShort and crossDn
+shortExit = allowShort and crossUp
+
+// --- orders (same decision order as engine/backtest.py) ---
+closeLong = longExit or shortEntry
+closeShort = shortExit or longEntry
+goLong = longEntry and not longExit
+goShort = shortEntry and not shortExit and not goLong
+if closeLong
+    strategy.close("L")
+if closeShort
+    strategy.close("S")
+if goLong
+    strategy.entry("L", strategy.long)
+if goShort
+    strategy.entry("S", strategy.short)
+
+// @@display (not part of the trading logic)
+plot(fastMa, "Fast MA", color=color.teal)
+plot(slowMa, "Slow MA", color=color.orange)

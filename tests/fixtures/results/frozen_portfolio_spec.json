@@ -1,0 +1,9 @@
+{
+  "freeze_time_utc": "2026-10-30T09:09:26+00:00",
+  "freeze_time_et": "2026-10-30T05:09:26-04:00",
+  "data_cutoff_utc": "2026-10-30T08:00:00+00:00",
+  "data_cutoff_et": "2026-10-30T04:00:00-04:00",
+  "evaluate_only_bars_opening_at_or_after": "2026-10-30T08:00:00+00:00",
+  "status": "frozen research protocol \u2014 NOT a live or paper trade",
+  "note": "Test fixture: cutoff fields only. The frozen system list and its in-sample statistics are research output and are not published."
+}

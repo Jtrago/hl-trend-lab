@@ -1,0 +1,22 @@
+[build-system]
+requires = ["setuptools>=64"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "hl-trend-lab"
+version = "0.1.0"
+description = "No-lookahead crypto trend-strategy backtester with IS/OOS filtering and Python-to-Pine v6 parity tests (research only)."
+readme = "README.md"
+license = { file = "LICENSE" }
+authors = [{ name = "Jtrago" }]
+requires-python = ">=3.10"
+dependencies = ["pandas>=2.2", "numpy>=1.26", "scipy>=1.11"]
+
+[project.optional-dependencies]
+test = ["pytest>=8"]
+
+[tool.setuptools]
+packages = ["engine"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]

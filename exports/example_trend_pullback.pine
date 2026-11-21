@@ -1,0 +1,34 @@
+//@version=6
+// HL Trend Lab export — PAPER RESEARCH ONLY. Not financial advice.
+// Fill rule: signals on bar close, market fill at next bar open.
+// Costs: fee 0.0450% + slip 0.0200% per side folded into commission.
+strategy("HL Trend Lab trend_pullback SMA200 RSI3 30/60 long", overlay=true, initial_capital=10000, default_qty_type=strategy.percent_of_equity, default_qty_value=100, commission_type=strategy.commission.percent, commission_value=0.065, slippage=0, pyramiding=1, margin_long=0, margin_short=0, process_orders_on_close=false, calc_on_every_tick=false, calc_on_order_fills=false, fill_orders_on_standard_ohlc=true)
+
+trendLen = input.int(200, "Trend MA length", minval=1)
+rsiLen = input.int(3, "RSI length", minval=1)
+rsiEntry = input.float(30.0, "RSI pullback entry (long below)")
+rsiExit = input.float(60.0, "RSI exit (long above)")
+allowShort = input.bool(false, "Allow shorts")
+trendMa = ta.sma(close, trendLen)
+r = ta.rsi(close, rsiLen)
+longEntry = close > trendMa and r < rsiEntry
+longExit = r > rsiExit or close < trendMa
+shortEntry = allowShort and close < trendMa and r > 100 - rsiEntry
+shortExit = allowShort and (r < 100 - rsiExit or close > trendMa)
+
+// --- orders (same decision order as engine/backtest.py) ---
+closeLong = longExit or shortEntry
+closeShort = shortExit or longEntry
+goLong = longEntry and not longExit
+goShort = shortEntry and not shortExit and not goLong
+if closeLong
+    strategy.close("L")
+if closeShort
+    strategy.close("S")
+if goLong
+    strategy.entry("L", strategy.long)
+if goShort
+    strategy.entry("S", strategy.short)
+
+// @@display (not part of the trading logic)
+plot(trendMa, "Trend MA", color=color.orange)

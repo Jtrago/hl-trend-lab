@@ -1,0 +1,38 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.eggs/
+build/
+dist/
+.venv/
+venv/
+env/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.coverage
+htmlcov/
+.ipynb_checkpoints/
+
+# Secrets / local config
+.env
+.env.*
+*.pem
+*.key
+
+# Research data and output: generated locally, never committed
+/data/
+/results/
+/cache/
+/pine/
+/logs/
+*.log
+survivors.json
+survivors.md
+*.pkl
+*.parquet
+*.zip
+# CSV/JSON dumps are blocked except the small test fixtures
+*.csv
+!tests/fixtures/**/*.csv
